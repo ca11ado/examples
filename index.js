@@ -23,3 +23,19 @@ let result = _.chain(_.get(testObject, 'testCollection'))
 console.log(result);
 
 console.log(_.every(testCollection, { address: 'Moscow' }));
+
+console.log(' ----------- ');
+let pickTest = _.chain(testCollection)
+  .filter({ id: 10 })
+  .head()
+  .pick('address')
+  .value();
+
+console.log(pickTest);
+
+console.log(` reject test ------------`);
+
+let rejectTest = _.chain(testCollection)
+  .reject({ id: 2 })
+  .value();
+console.log(rejectTest);
