@@ -48,3 +48,9 @@ console.log(findTest);
 
 console.log(` math ceil ------------`);
 console.log(_.ceil(43.02));
+
+console.log(` creating array ------------`);
+var myArray = _.chain(new Array(_.ceil(99 / 10)))
+  .map((val) => 'test')
+  .value();
+console.log(myArray);
