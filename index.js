@@ -45,3 +45,6 @@ let findTest = _.chain(testCollection)
   .find({ id: 2 })
   .value();
 console.log(findTest);
+
+console.log(` math ceil ------------`);
+console.log(_.ceil(43.02));
