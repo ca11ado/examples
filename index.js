@@ -38,7 +38,7 @@ beginPromise
         console.log('success response');
       })
       .catch((e) => {
-        return e;
+        console.log(e);
       })
   })
   .catch((e) => console.log(`error begin level ${e}`));
