@@ -39,3 +39,9 @@ let rejectTest = _.chain(testCollection)
   .reject({ id: 2 })
   .value();
 console.log(rejectTest);
+
+console.log(` find test ------------`);
+let findTest = _.chain(testCollection)
+  .find({ id: 2 })
+  .value();
+console.log(findTest);
