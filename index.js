@@ -2,7 +2,7 @@
 require('babel-register');
 let _ = require('lodash');
 
-let myPromise = new Promise((resolve, reject) => {
+let firstPromise = new Promise((resolve, reject) => {
   let myObj = {
     one: 'one',
     two: 'two'
@@ -10,44 +10,35 @@ let myPromise = new Promise((resolve, reject) => {
   resolve(myObj);
 });
 
-
-myPromise
-  .then((res) => {
-    //console.log(res);
-    return res;
-  })
-  .then(res => {
-    //console.log(res);
-  });
-
-
-let partObj = {
-  ficus: {
-    code: 200
-  }
-};
-
-
-let mySecondPromise = new Promise((resolve, reject) => {
+let secondPromise = new Promise((resolve, reject) => {
   let myObj = {
-    one: 'one',
-    two: 'two',
-    code: 200
+    one: 'three',
+    two: 'four'
+  };
+  reject('tttt');
+  resolve(myObj);
+});
+
+let thirdPromise = new Promise((resolve, reject) => {
+  let myObj = {
+    one: 'six',
+    two: 'seven'
   };
   resolve(myObj);
 });
 
-mySecondPromise
-  .then(_.partialRight(checkStatus, partObj))
-  .then(res => {
-    console.log(res);
-  });
+let beginPromise = new Promise((resolve, reject) => {
+  resolve('begin promise');
+});
 
-
-function checkStatus(data) {
-  console.log(arguments);
-  if (_.get(data, ['status', 'code']) == 200) {
-    data.status.code = 400;
-  }
-  return data;
-}
+beginPromise
+  .then((response) => {
+    Promise.all([firstPromise, secondPromise])
+      .then((responses) => {
+        console.log('success response');
+      })
+      .catch((e) => {
+        return e;
+      })
+  })
+  .catch((e) => console.log(`error begin level ${e}`));
