@@ -10,6 +10,14 @@ let testCollection = [
   { id: 5, address: 'Moscow', isNew: true, checkedAt: null }
 ];
 
+let testCollection2 = [
+  { id: 1, address: 'Moscow', isNew: false, checkedAt: 1234, response: { code: 200 } },
+  { id: 2, address: 'Moscow', isNew: false, checkedAt: 1234, response: { code: 200 } },
+  { id: 3, address: 'Moscow', isNew: false, checkedAt: 1234, response: { code: 200 } },
+  { id: 4, address: 'Moscow', isNew: false, checkedAt: false, response: { code: 200 } },
+  { id: 5, address: 'Moscow', isNew: true, checkedAt: null, response: { code: 200 } }
+];
+
 let testObject = {
   testCollection
 };
@@ -51,6 +59,10 @@ console.log(_.ceil(43.02));
 
 console.log(` creating array ------------`);
 var myArray = _.chain(new Array(_.ceil(99 / 10)))
-  .map((val) => 'test')
+  .map((val, index) => 'test' + index)
   .value();
 console.log(myArray);
+
+console.log(` every ------------`);
+let testEvery = _.every(testCollection2, { response: { code: 200 } });
+console.log(testEvery);
