@@ -2,43 +2,44 @@
 require('babel-register');
 let _ = require('lodash');
 
-let firstPromise = new Promise((resolve, reject) => {
-  let myObj = {
-    one: 'one',
-    two: 'two'
-  };
-  resolve(myObj);
+let prom1 = new Promise((res) => {
+  res('t');
 });
 
-let secondPromise = new Promise((resolve, reject) => {
-  let myObj = {
-    one: 'three',
-    two: 'four'
-  };
-  reject('tttt');
-  resolve(myObj);
+let prom2 = new Promise((res) => {
+  res('0');
 });
 
-let thirdPromise = new Promise((resolve, reject) => {
-  let myObj = {
-    one: 'six',
-    two: 'seven'
-  };
-  resolve(myObj);
+let prom3 = new Promise((res) => {
+  res('s');
 });
 
-let beginPromise = new Promise((resolve, reject) => {
-  resolve('begin promise');
+let promE = new Promise((res, rej) => {
+  rej('error');
 });
 
-beginPromise
-  .then((response) => {
-    Promise.all([firstPromise, secondPromise])
-      .then((responses) => {
-        console.log('success response');
-      })
-      .catch((e) => {
-        console.log(e);
-      })
+Promise.all([prom1, prom2, prom3])
+  .then((results) => {
+    console.log('----------------- all success');
+    console.log(results.join(''));
   })
-  .catch((e) => console.log(`error begin level ${e}`));
+  .catch((e) => console.log(e));
+
+
+Promise.all([prom1, prom2, prom3, promE])
+  .then((results) => {
+    console.log(results.join(''));
+  })
+  .catch((e) => {
+    console.log('----------------- all error');
+    console.log(e)
+  });
+
+let upperPromse = new Promise((res, rej) => {
+  res();
+});
+upperPromse
+  .then(() => {
+    console.log('----------------- chain of promises');
+  })
+  .catch();
