@@ -57,3 +57,12 @@ let testIntersection = _.chain(intersectionCollection)
   .find({ isNew: true })
   .value();
 console.log(testIntersection);
+
+console.log(` filter ------------`);
+let testFilter = _.chain(testCollection)
+  .filter({ id: 10 })
+  .head()
+  .pick(['address'])
+  .value();
+
+console.log(_.isEmpty(testFilter));
