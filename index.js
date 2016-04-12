@@ -12,7 +12,7 @@ function checkDestr ({ one, two }) {
   console.log(one, two);
 }
 
-var { checked: test } = { checked: true, someElse: false };
+let { checked: test } = { checked: true, someElse: false };
 
 console.log(test);
 
@@ -21,3 +21,17 @@ function destr ({ checked: status }) {
 }
 
 console.log(destr({ checked: true }));
+
+console.log('default values in destructuring ------------');
+
+let testObject = { firstValue: 'one', secondValue: 'two', thirdValue: 'three' };
+let { firstValue2  = 'firstValue2'} = testObject;
+console.log(firstValue2);
+
+
+let promise = new Promise((res, rej) => res({ data: 2 }));
+promise
+  .then(({ data2 = { defValue: 1 } }) => {
+    console.log(' ------------ default values in destructuring with promises');
+    console.log(data2);
+  });
