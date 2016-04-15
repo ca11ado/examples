@@ -18,6 +18,13 @@ let testCollection2 = [
   { id: 5, address: 'Moscow', isNew: true, checkedAt: null, response: { code: 200 } }
 ];
 
+let testCollection3 = {
+  headBranch: false,
+  address: undefined,
+  name: undefined,
+  streen: undefined
+};
+
 let intersectionCollection = [
   {
     status: {
@@ -66,3 +73,11 @@ let testFilter = _.chain(testCollection)
   .value();
 
 console.log(_.isEmpty(testFilter));
+
+console.log(` reject ------------`);
+let testReject = _.chain(testCollection3)
+  .omit('headBranch')
+  .every(_.isUndefined)
+  .value();
+
+console.log(testReject);
