@@ -2,6 +2,8 @@
 require('babel-register');
 var _ = require('lodash');
 
+// --harmony_destructuring
+
 let testCollection = [
   { id: 1, address: 'Moscow', isNew: false, checkedAt: 1234 },
   { id: 2, address: 'Moscow', isNew: false, checkedAt: 1234 },
@@ -55,29 +57,26 @@ let intersectionCollection = [
   }
 ];
 
-console.log(` reduce ------------`);
-let testIntersection = _.chain(intersectionCollection)
-  .reduce((result, value, key) => {
-    var items = _.get(value, 'content.result.items');
-    return [ ...result, ...items];
-  }, [])
-  .find({ isNew: true })
-  .value();
-console.log(testIntersection);
+console.log(` -------- let `);
 
-console.log(` filter ------------`);
-let testFilter = _.chain(testCollection)
-  .filter({ id: 10 })
-  .head()
-  .pick(['address'])
-  .value();
+let { headBranch, streen } = testCollection3;
+console.log(headBranch, streen);
 
-console.log(_.isEmpty(testFilter));
+console.log(` -------- перебор `);
+let number = 100;
+let sNumber = number.toString();
+let rNumber = _.reduceRight(sNumber, (prev, val, index) => {
+  //console.log(prev, val, index);
+  if ((index) % 3 === 0) {
+    prev = ' ' + prev;
+  }
+  return val + prev;
+}, '');
+console.log(rNumber);
 
-console.log(` reject ------------`);
-let testReject = _.chain(testCollection3)
-  .omit('headBranch')
-  .every(_.isUndefined)
-  .value();
-
-console.log(testReject);
+console.log(' --------- thousand separator');
+function numberWithCommas(x) {
+  /*return */x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+let nn = 100000;
+console.log(numberWithCommas(nn));
