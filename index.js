@@ -21,6 +21,13 @@ class MyNewClass {
   greet (text) {
     return `Greet ${text}`;
   }
+
+  get PATHS () {
+    return {
+      path1: '1',
+      path2: '2'
+    }
+  }
 }
 
 
@@ -37,3 +44,7 @@ class MyNextClass extends MyNewClass {
 
 let myNextClass = new MyNextClass(13);
 myNextClass.showAge();
+
+console.log('------------ test getter');
+console.log(MyNewClass.PATHS);
+console.log(myName.PATHS);
