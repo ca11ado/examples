@@ -20,4 +20,19 @@ let thirdCollection = [
 ];
 
 let merge = _.merge(firstCollection, secondCollection);
-console.log(merge);
+
+let combine = _.chain(thirdCollection)
+  .reduce((accum, group) => {
+    let tt;
+    if (tt = _.find(accum, { city: group.city })) {
+      tt.items = [...tt.items, ...group.items];
+    } else {
+      accum.push(group);
+    }
+    return accum;
+  }, firstCollection)
+  .value();
+
+console.log(combine);
+console.log(combine[0].items);
+console.log(combine[1].items);
