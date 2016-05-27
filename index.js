@@ -33,6 +33,40 @@ let combine = _.chain(thirdCollection)
   }, firstCollection)
   .value();
 
-console.log(combine);
-console.log(combine[0].items);
-console.log(combine[1].items);
+
+
+let response = (citiesArr) => {
+  let groups = _.map(citiesArr, ({ cityName, addressesCount }, index) => {
+    let items = _.fill(new Array(addressesCount), 'templaste');
+    console.log(_.size(items));
+    items = _.map(items, (items, indexIn) => {
+      return {
+        id: '76328437623932',
+        building: {
+          id: '1267273050395491',
+          city: `${cityName}-${index}`,
+          street: `Street-${indexIn}`,
+          number: `${indexIn}`
+        },
+        internet_technology: ["ethernet", "adsl", "adsl2", "docsis", "plc", "pon", "4g", "3g", "fttp", "fttb"],
+        available_services: ["internet", "phone", "digital_tv", "cable_tv"]
+      };
+    });
+    return {
+      city: `CityName-${index}`,
+      items
+    };
+  });
+
+  return {
+    status: { code: 200 },
+    content: {
+      result: {
+        group: groups
+      }
+    }
+  };
+};
+
+let responseAPI = response([{ cityName: 'Москва', addressesCount: 10 }, { cityName: 'Питер', addressCount: 10 }]);
+console.log(responseAPI.content.result.group[0].items);
