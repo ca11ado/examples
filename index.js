@@ -7,7 +7,7 @@ class MyNewClass {
   }
 
   showName () {
-    console.log(this.name);
+    return this.name;
   }
 
   showGreetName () {
@@ -37,14 +37,13 @@ myName.showName();
 myName.showGreetName();
 
 class MyNextClass extends MyNewClass {
-  showAge () {
-    super.showName();
-  }
 }
 
-let myNextClass = new MyNextClass(13);
-myNextClass.showAge();
+let myNextClass = new MyNextClass();
 
-console.log('------------ test getter');
+/*console.log('------------ test getter');
 console.log(MyNewClass.PATHS);
-console.log(myName.PATHS);
+console.log(myName.PATHS);*/
+
+console.log('------------ show now');
+console.log(myNextClass.showName());
