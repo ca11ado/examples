@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "babel-register": "^6.3.13",
-    "lodash": "^3.10.1"
+    "catberry-uri": "^3.1.0",
+    "lodash": "^3.10.1",
+    "urijs": "^1.18.1"
   }
 }
