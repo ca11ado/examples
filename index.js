@@ -20,6 +20,10 @@ class Addresses extends Tree {
     this._limit = limit;
   }
 
+  addAddresses (addresses) {
+    this.addresses = this.constructor.formatAddresses(addresses);
+  }
+
   /**
    * Путь к инстансу в локаторе
    * @returns {string}
@@ -33,14 +37,22 @@ class IspValidPageTree extends Addresses {
   className () {
     return super.constructor.className;
   }
-  
+
   getMonkey () {
     return this._monkey;
+  }
+
+  static formatAddresses (addresses) {
+    addresses = _.map(addresses, this.formatItem);
+    return _.map(addresses, (address) => `${address} + 2`);
+  }
+
+  static formatItem (item) {
+    return `${item} + 3`;
   }
 }
 
 let isp = new IspValidPageTree('state', 'monkey', '1');
 
+isp.addAddresses(['one', 'two', 'three']);
 console.log(isp);
-console.log(isp.className());
-console.log(isp.getMonkey());
