@@ -1,8 +1,8 @@
 'use strict';
-require('babel-register');
 
 let data = {
-  license: true
+  license: true,
+  emails: [ 'test@ya.ru', 'test@gmail.com', 'test@mail.ru']
 };
 
 let str = [];
@@ -15,5 +15,7 @@ let encodedData = encodeURIComponent(data);
 let encoded2Data = encodeURI(data);
 
 let emails = `["${data.emails.join('", "')}"]`;
+let emails2 = JSON.stringify(data.emails);
 
 console.log(emails);
+console.log(emails2);
