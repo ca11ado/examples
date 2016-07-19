@@ -1,8 +1,3 @@
-'use strict';
-let _ = require('lodash');
-
-let index2 = require('./index2');
-
 class Tree {
   constructor (state) {
     this._state = state;
@@ -35,7 +30,7 @@ class Addresses extends Tree {
 }
 
 class IspValidPageTree extends Addresses {
-  className () {
+  className2 () {
     return super.constructor.className;
   }
 
@@ -53,10 +48,4 @@ class IspValidPageTree extends Addresses {
   }
 }
 
-let isp = new IspValidPageTree('state', 'monkey', '1');
-
-isp.addAddresses(['one', 'two', 'three']);
-console.log(isp);
-
-let isp2 = new index2();
-isp2.className2();
+module.exports = IspValidPageTree;
