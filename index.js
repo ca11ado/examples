@@ -19,54 +19,22 @@ let thirdCollection = [
   { city: 'Himki', items: [{ address: 'Stalina 1' }, { address: 'Stalina 2' }] }
 ];
 
-let merge = _.merge(firstCollection, secondCollection);
-
-let combine = _.chain(thirdCollection)
-  .reduce((accum, group) => {
-    let tt;
-    if (tt = _.find(accum, { city: group.city })) {
-      tt.items = [...tt.items, ...group.items];
-    } else {
-      accum.push(group);
-    }
-    return accum;
-  }, firstCollection)
-  .value();
-
-
-
-let response = (citiesArr) => {
-  let groups = _.map(citiesArr, ({ cityName, addressesCount }, index) => {
-    let items = _.fill(new Array(addressesCount), 'templaste');
-    console.log(_.size(items));
-    items = _.map(items, (items, indexIn) => {
-      return {
-        id: '76328437623932',
-        building: {
-          id: '1267273050395491',
-          city: `${cityName}-${index}`,
-          street: `Street-${indexIn}`,
-          number: `${indexIn}`
-        },
-        internet_technology: ["ethernet", "adsl", "adsl2", "docsis", "plc", "pon", "4g", "3g", "fttp", "fttb"],
-        available_services: ["internet", "phone", "digital_tv", "cable_tv"]
-      };
-    });
-    return {
-      city: `CityName-${index}`,
-      items
-    };
-  });
-
-  return {
-    status: { code: 200 },
-    content: {
-      result: {
-        group: groups
-      }
-    }
-  };
+let tObject = {
+  one: 1,
+  two: 2
 };
 
-let responseAPI = response([{ cityName: 'Москва', addressesCount: 10 }, { cityName: 'Питер', addressCount: 10 }]);
-console.log(responseAPI.content.result.group[0].items);
+_.defer(() => {
+  console.log('DEFER');
+});
+
+console.log(tObject);
+console.log(_.reject(tObject, ({ one }) => Boolean(one)));
+console.log(_.omit(tObject, 'one'));
+
+let counter = 0;
+for (let i=0; i<1000000000; i++) {
+  counter = counter + i;
+}
+
+console.log('for i', counter);
