@@ -4,18 +4,72 @@
 <head>
 <meta charset="utf-8">
 <style>
+  #scrollElement {
+    width: 300px;
+    height: 200px;
+    overflow: scroll;
+    border: 1px solid black;
+  }
 
+  .console {
+    margin-top: 50px;
+    color: red;
+  }
 </style>
 </head>
 
 <body>
-  <ul>
-    <li>1</li>
-    <li>2</li>
-  </ul>
+  <div id="scrollElement">
+
+  </div>
+  <div class="console">
+  </div>
   <script>
-    let ul = document.getElementsByTagName('ul')[0];
-    ul.insertAdjacentHTML('beforeEnd', '<li>3</li><li>4</li>');
+    let scrollElement = document.getElementById('scrollElement');
+    addScrollableElement(10, scrollElement);
+
+    // Task 1: найти прокрутку снизу
+    showMetrics(scrollElement);
+    scrollElement.addEventListener('scroll', () => {
+      showMetrics(scrollElement);
+    });
+
+    // Task 2: узнать ширину прокрутки
+    let offsetWidth = scrollElement.offsetWidth;
+    let borderWidth = getElementMetric(scrollElement, 'borderLeftWidth')
+      + getElementMetric(scrollElement, 'borderRightWidth');
+    let paddingWidth = getElementMetric(scrollElement, 'paddingLeft') + getElementMetric(scrollElement, 'paddingRight');
+    let contentWidth = scrollElement.clientWidth;
+
+    console.log(offsetWidth, contentWidth, paddingWidth, borderWidth);
+    console.log(offsetWidth - contentWidth - paddingWidth - borderWidth);
+
+    // Functions
+    function addScrollableElement (textCount, scrollElement) {
+      let text = '';
+      for (let i = 0; i < textCount; i++) {
+        text += 'Кусок какого-нибудь текста, который можно клонировать долго-долго. Вот.';
+      }
+      scrollElement.textContent = text;
+    }
+
+    function showMetrics (scrollElement) {
+      let scrollHeight = scrollElement.scrollHeight;
+      let scrollTop = scrollElement.scrollTop;
+      let contentHeight = scrollElement.clientHeight;
+      let scrollBottom = scrollHeight - scrollTop - contentHeight;
+
+      let consoleElement = document.querySelector('.console');
+      consoleElement.innerHTML = `<ul>\
+        <li>Вся высота ${scrollHeight}</li>\
+        <li>Скорлл сверху ${scrollTop}</li>\
+        <li>Скролл снизу ${scrollBottom}</li>\
+      </ul>`;
+    }
+
+    function getElementMetric (el, property) {
+      return parseInt(getComputedStyle(el)[property], 10);
+    }
   </script>
 </body>
 
