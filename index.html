@@ -9,9 +9,14 @@
 </head>
 
 <body>
-
-  <!--<script src="task1.js"></script>-->
-  <script src="task2.js"></script>
+  <ul>
+    <li>1</li>
+    <li>2</li>
+  </ul>
+  <script>
+    let ul = document.getElementsByTagName('ul')[0];
+    ul.insertAdjacentHTML('beforeEnd', '<li>3</li><li>4</li>');
+  </script>
 </body>
 
 </html>
