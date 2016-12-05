@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Уведомление</title>
+  <style>
+    .welcome {
+      background-color: green;
+    }
+    .another {
+      background-color: yellow;
+    }
+
+    * {
+      background-color: rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  /**
+   * Показывает уведомление, пропадающее через 1.5 сек
+   *
+   * @param options.top {number} вертикальный отступ, в px
+   * @param options.right {number} правый отступ, в px
+   * @param options.cssText {string} строка стиля
+   * @param options.className {string} CSS-класс
+   * @param options.html {string} HTML-текст для показа
+   */
+  function showNotification (options) {
+    let { top = 0, right = 0, cssText = '', className = '', html = '' } = options;
+    let span = document.createElement('span');
+    span.innerHTML = html;
+    span.className = className;
+
+    span.style.cssText = cssText;
+    Object.assign(span.style, { top, right, position: 'absolute' });
+    document.body.insertBefore(span, null);
+  }
+
+  showNotification({ top: '100px', right: '100px', html: 'Hello', className: 'welcome' });
+  showNotification({ top: '20px', right: '20px', html: 'Another', className: 'another' });
+</script>
+</body>
+</html>
