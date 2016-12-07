@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    #elem {
+      width: 200px;
+      height: 150px;
+      background-color: red;
+      padding: 20px;
+      overflow: auto;
+    }
+
+    body {
+      border: 1px solid black;
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="elem">
+  текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст
+  текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст
+  текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст
+  текст текст
+</div>
+
+<script>
+  let elem = document.getElementById("elem");
+  let body = document.body;
+  let padding = parseMetric(elem, 'paddingLeft') + parseMetric(elem, 'paddingRight');
+  let bodyWidth = body.clientWidth - (parseMetric(body, 'paddingLeft') + parseMetric(body, 'paddingRight'));
+
+  elem.style.width = bodyWidth - padding + 'px';
+
+  function parseMetric (elem, prop) {
+    return parseInt(getComputedStyle(elem)[prop], 10);
+  }
+</script>
+
+
+</body>
+
+</html>

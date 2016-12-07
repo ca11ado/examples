@@ -35,14 +35,7 @@
     });
 
     // Task 2: узнать ширину прокрутки
-    let offsetWidth = scrollElement.offsetWidth;
-    let borderWidth = getElementMetric(scrollElement, 'borderLeftWidth')
-      + getElementMetric(scrollElement, 'borderRightWidth');
-    let paddingWidth = getElementMetric(scrollElement, 'paddingLeft') + getElementMetric(scrollElement, 'paddingRight');
-    let contentWidth = scrollElement.clientWidth;
-
-    console.log(offsetWidth, contentWidth, paddingWidth, borderWidth);
-    console.log(offsetWidth - contentWidth - paddingWidth - borderWidth);
+    console.log(getScrollWidthOnPage());
 
     // Functions
     function addScrollableElement (textCount, scrollElement) {
@@ -67,8 +60,21 @@
       </ul>`;
     }
 
-    function getElementMetric (el, property) {
-      return parseInt(getComputedStyle(el)[property], 10);
+    function getScrollWidthOnPage () {
+      let emptyDiv = document.createElement('div');
+      Object.assign(emptyDiv.style, {
+        width: '200px',
+        height: '200px',
+        overflowY: 'scroll',
+        visibility: 'hidden'
+      });
+      document.body.appendChild(emptyDiv);
+
+      let result = emptyDiv.offsetWidth - emptyDiv.clientWidth;
+
+      document.body.removeChild(emptyDiv);
+
+      return result;
     }
   </script>
 </body>
