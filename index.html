@@ -3,80 +3,63 @@
 
 <head>
 <meta charset="utf-8">
-<style>
-  #scrollElement {
-    width: 300px;
-    height: 200px;
-    overflow: scroll;
-    border: 1px solid black;
-  }
-
-  .console {
-    margin-top: 50px;
-    color: red;
-  }
-</style>
+<link rel="stylesheet" href="index.css">
+<script>
+document.onclick = function(e) { // выводит текущие координаты при клике
+  document.getElementById('coords').innerHTML = e.clientX + ':' + e.clientY;
+};
+</script>
 </head>
 
 <body>
-  <div id="scrollElement">
 
-  </div>
-  <div class="console">
-  </div>
-  <script>
-    let scrollElement = document.getElementById('scrollElement');
-    addScrollableElement(10, scrollElement);
+Кликните на любое место, чтобы получить координаты относительно окна.
+<br> Это для удобства тестирования, чтобы проверить результат, который вы получите из DOM.
+<br>
+<div id="coords">(координаты появятся тут)</div>
 
-    // Task 1: найти прокрутку снизу
-    showMetrics(scrollElement);
-    scrollElement.addEventListener('scroll', () => {
-      showMetrics(scrollElement);
-    });
 
-    // Task 2: узнать ширину прокрутки
-    console.log(getScrollWidthOnPage());
+<div id="field">
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+</div>
 
-    // Functions
-    function addScrollableElement (textCount, scrollElement) {
-      let text = '';
-      for (let i = 0; i < textCount; i++) {
-        text += 'Кусок какого-нибудь текста, который можно клонировать долго-долго. Вот.';
-      }
-      scrollElement.textContent = text;
-    }
 
-    function showMetrics (scrollElement) {
-      let scrollHeight = scrollElement.scrollHeight;
-      let scrollTop = scrollElement.scrollTop;
-      let contentHeight = scrollElement.clientHeight;
-      let scrollBottom = scrollHeight - scrollTop - contentHeight;
+<div class="triangle-right" style="left:-20px;top:-176px">1</div>
+<div class="triangle-right" style="left:-10px;top:-178px">3</div>
+<div class="triangle-right" style="left:190px;top:-40px">4</div>
+<div class="triangle-right" style="left:200px;top:-42px">2</div>
 
-      let consoleElement = document.querySelector('.console');
-      consoleElement.innerHTML = `<ul>\
-        <li>Вся высота ${scrollHeight}</li>\
-        <li>Скорлл сверху ${scrollTop}</li>\
-        <li>Скролл снизу ${scrollBottom}</li>\
-      </ul>`;
-    }
 
-    function getScrollWidthOnPage () {
-      let emptyDiv = document.createElement('div');
-      Object.assign(emptyDiv.style, {
-        width: '200px',
-        height: '200px',
-        overflowY: 'scroll',
-        visibility: 'hidden'
-      });
-      document.body.appendChild(emptyDiv);
+<script>
+var field = document.getElementById('field');
+let clickCoord = {
+  leftOut: '28, 82',
+  rightOut: '248, 250',
+  leftIn: '38, 91',
+  rightIn: '238, 241'
+};
 
-      let result = emptyDiv.offsetWidth - emptyDiv.clientWidth;
+let fieldCoord = field.getBoundingClientRect();
+let fieldStyles = getComputedStyle(field);
+let borderTop = parseInt(fieldStyles.borderTopWidth, 10);
+let borderLeft = parseInt(fieldStyles.borderLeftWidth, 10);
+let borderRight = parseInt(fieldStyles.borderRightWidth, 10);
+let borderBottom = parseInt(fieldStyles.borderBottomWidth, 10);
 
-      document.body.removeChild(emptyDiv);
+let calcCoord = {
+  leftOut: `${fieldCoord.left}, ${fieldCoord.top}`,
+  rightOut: `${fieldCoord.right}, ${fieldCoord.bottom}`,
+  leftIn: `${fieldCoord.left + borderLeft}, ${fieldCoord.top + borderTop}`,
+  rightIn: `${fieldCoord.right - borderRight}, ${fieldCoord.bottom - borderBottom}`
+};
 
-      return result;
-    }
-  </script>
+console.log('Координаты должны быть такими');
+console.log(clickCoord);
+console.log('А получились вот такими');
+console.log(calcCoord);
+</script>
+
 </body>
 
 </html>
