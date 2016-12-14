@@ -26,39 +26,47 @@
    * в position.
    *
    * @param {Node} anchor     Элемент-якорь, относительно которого задана позиция
-   * @param {string} position Позиция: одно из top/right/bottom
+   * @param {string} position Позиция: одно из (top/right/bottom)
    * @param {Node} elem       Элемент, который будет позиционирован
+   *
+   * Оба элемента elem && anchor должны быть видимы в документе.
    */
   function positionAt(anchor, position, elem) {
-    const coordinates = anchor.getBoundingClientRect();
-    const elemWidth = parseInt(elem.offsetWidth, 10);
-    const elemHeight = parseInt(elem.offsetHeight, 10);
+
+    var anchorCoords = anchor.getBoundingClientRect();
 
     switch (position) {
-      case 'top':
-        Object.assign(elem.style, {
-          top: coordinates.top + elemHeight + 'px',
-          left: coordinates.left + 'px'
-        });
+      case "top-output":
+        elem.style.left = anchorCoords.left + "px";
+        elem.style.top = pageYOffset + anchorCoords.top - elem.offsetHeight + "px";
         break;
-      case 'right':
-        Object.assign(elem.style, {
-          top: coordinates.top + 'px',
-          left: coordinates.right + 'px'
-        });
+
+      case "right-output":
+        elem.style.left = anchorCoords.left + anchor.offsetWidth + "px";
+        elem.style.top = pageYOffset + anchorCoords.top + "px";
         break;
-      case 'bottom':
-        Object.assign(elem.style, {
-          top: coordinates.bottom + 'px',
-          left: coordinates.left + 'px'
-        });
+
+      case "bottom-output":
+        elem.style.left = anchorCoords.left + "px";
+        elem.style.top = pageYOffset + anchorCoords.top + anchor.offsetHeight + "px";
         break;
-      default:
-        Object.assign(elem.style, {
-          top: coordinates.top + elemHeight + 'px',
-          left: coordinates.left + 'px'
-        });
+
+      case "top-in":
+        elem.style.left = anchorCoords.left + "px";
+        elem.style.top = pageYOffset + anchorCoords.top + "px";
+        break;
+
+      case "right-in":
+        elem.style.left = anchorCoords.left + anchor.offsetWidth - elem.offsetWidth + "px";
+        elem.style.top = pageYOffset + anchorCoords.top + "px";
+        break;
+
+      case "bottom-in":
+        elem.style.left = anchorCoords.left + "px";
+        elem.style.top = pageYOffset + anchorCoords.top + anchor.offsetHeight - elem.offsetHeight + "px";
+        break;
     }
+
   }
 
   /**
@@ -66,20 +74,25 @@
    * относительно элемента anchor
    */
   function showNote(anchor, position, html) {
-    const elem = document.createElement('div');
-    elem.className = 'note';
-    elem.textContent = html;
 
-    positionAt(anchor, position, elem);
-    document.body.insertBefore(elem, null);
+    const note = document.createElement('div');
+    note.className = "note";
+    note.innerHTML = html;
+    document.body.appendChild(note);
+
+    positionAt(anchor, position, note);
   }
 
   // проверка работоспособности
-  var blockquote = document.querySelector('blockquote');
+  const blockquote = document.querySelector('blockquote');
 
-  showNote(blockquote, "top", "заметка сверху");
-  showNote(blockquote, "right", "заметка справа");
-  showNote(blockquote, "bottom", "заметка снизу");
+  showNote(blockquote, "top-output", "заметка сверху");
+  showNote(blockquote, "right-output", "заметка справа");
+  showNote(blockquote, "bottom-output", "заметка снизу");
+
+  showNote(blockquote, "top-in", "заметка сверху");
+  showNote(blockquote, "right-in", "заметка справа");
+  showNote(blockquote, "bottom-in", "заметка снизу");
 </script>
 
 

@@ -1,5 +1,9 @@
+body {
+  height: 2000px;
+}
+
 .note {
-  position: fixed;
+  position: absolute;
   z-index: 1000;
   padding: 5px;
   border: 1px solid black;

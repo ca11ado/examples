@@ -4,60 +4,39 @@
 <head>
 <meta charset="utf-8">
 <link rel="stylesheet" href="index.css">
-<script>
-document.onclick = function(e) { // выводит текущие координаты при клике
-  document.getElementById('coords').innerHTML = e.clientX + ':' + e.clientY;
-};
-</script>
 </head>
 
 <body>
 
-Кликните на любое место, чтобы получить координаты относительно окна.
-<br> Это для удобства тестирования, чтобы проверить результат, который вы получите из DOM.
-<br>
-<div id="coords">(координаты появятся тут)</div>
-
-
-<div id="field">
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+<div id="text">
 </div>
 
-
-<div class="triangle-right" style="left:-20px;top:-176px">1</div>
-<div class="triangle-right" style="left:-10px;top:-178px">3</div>
-<div class="triangle-right" style="left:190px;top:-40px">4</div>
-<div class="triangle-right" style="left:200px;top:-42px">2</div>
-
-
 <script>
-var field = document.getElementById('field');
-let clickCoord = {
-  leftOut: '28, 82',
-  rightOut: '248, 250',
-  leftIn: '38, 91',
-  rightIn: '238, 241'
-};
+  let textElement = document.getElementById('text');
+  let template = 'fewfewf ewf wef ewfew fewfew fwefsdvvcbfgn[ rgre[gwowqeiojq vxv v';
+  let text = '';
+  for (let i = 0; i < 200; i++ ) {
+    text += template;
+  }
+  textElement.textContent = text;
 
-let fieldCoord = field.getBoundingClientRect();
-let fieldStyles = getComputedStyle(field);
-let borderTop = parseInt(fieldStyles.borderTopWidth, 10);
-let borderLeft = parseInt(fieldStyles.borderLeftWidth, 10);
-let borderRight = parseInt(fieldStyles.borderRightWidth, 10);
-let borderBottom = parseInt(fieldStyles.borderBottomWidth, 10);
 
-let calcCoord = {
-  leftOut: `${fieldCoord.left}, ${fieldCoord.top}`,
-  rightOut: `${fieldCoord.right}, ${fieldCoord.bottom}`,
-  leftIn: `${fieldCoord.left + borderLeft}, ${fieldCoord.top + borderTop}`,
-  rightIn: `${fieldCoord.right - borderRight}, ${fieldCoord.bottom - borderBottom}`
-};
+  window.getScr = function getDocumentScroll () {
+    const clientHeight = Math.max(
+      document.documentElement.clientHeight,
+      document.documentElement.offsetHeight,
+      document.documentElement.scrollHeight,
+      document.body.clientHeight,
+      document.body.offsetHeight,
+      document.body.scrollHeight
+    );
 
-console.log('Координаты должны быть такими');
-console.log(clickCoord);
-console.log('А получились вот такими');
-console.log(calcCoord);
+    return {
+      top: pageYOffset,
+      bottom: pageYOffset + document.documentElement.clientHeight,
+      height: clientHeight
+    }
+  }
 </script>
 
 </body>
