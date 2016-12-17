@@ -3,11 +3,46 @@
   <head>
     <title>Markup</title>
     <style>
+      body * {
+        background-color: rgba(0,0,0,0.1);
+      }
 
+      #wrapper {
+        width: 400px;
+        height: 400px;
+      }
+
+      @media screen and (min-width: 801px) {
+        #header {
+          background-color: yellow;
+        }
+      }
+
+      @media screen and (max-width: 800px) {
+        #header {
+          width: 50%;
+          float: right;
+        }
+        
+        #center {
+          width: 50%;
+          height: 100%;
+          float: left;
+        }
+
+        #bottom {
+          width: 50%;
+          float: right;
+        }
+      }
     </style>
   </head>
   <body>
-
+    <div id="wrapper">
+      <div id="header">header</div>
+      <div id="center">center</div>
+      <div id="bottom">bottom</div>
+    </div>
   <script>
 
   </script>
