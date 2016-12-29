@@ -3,40 +3,90 @@
 
 <head>
 <meta charset="utf-8">
-<link rel="stylesheet" href="index.css">
+<style>
+	body {
+		height: 2000px;
+	}
+	.tooltip {
+		border: 1px solid green;
+		border-radius: 2px;
+		background-color: white;
+		padding: 10px 10px;
+	}
+</style>
 </head>
 
 <body>
 
-<div id="text">
-</div>
+<p>ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя</p>
+<p>ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя</p>
+
+<button data-tooltip="подсказка длиннее, чем элемент">Короткая кнопка</button>
+<button data-tooltip="HTML<br>подсказка">Ещё кнопка</button>
+
+<p>Прокрутите страницу, чтобы ссылки были вверху и проверьте, правильно ли показываются подсказки.</p>
+
 
 <script>
-  let textElement = document.getElementById('text');
-  let template = 'fewfewf ewf wef ewfew fewfew fwefsdvvcbfgn[ rgre[gwowqeiojq vxv v';
-  let text = '';
-  for (let i = 0; i < 200; i++ ) {
-    text += template;
-  }
-  textElement.textContent = text;
+	const tooltip = tooltipCreator();
 
+	document.onmouseover = function (e) {
+		const tooltipArg = e.target.getAttribute('data-tooltip');
+		if (tooltipArg) {
+			const coordinates = e.target.getBoundingClientRect();
+			tooltip.show(tooltipArg, coordinates);
+		}
+	};
 
-  window.getScr = function getDocumentScroll () {
-    const clientHeight = Math.max(
-      document.documentElement.clientHeight,
-      document.documentElement.offsetHeight,
-      document.documentElement.scrollHeight,
-      document.body.clientHeight,
-      document.body.offsetHeight,
-      document.body.scrollHeight
-    );
+	document.onmouseout = function (e) {
+		tooltip.hide();
+	}
 
-    return {
-      top: pageYOffset,
-      bottom: pageYOffset + document.documentElement.clientHeight,
-      height: clientHeight
-    }
-  }
+	function tooltipCreator () {
+		const tooltipMargin = 6;
+		const tooltipElement = document.createElement('div');
+		tooltipElement.className = 'tooltip';
+		tooltipElement.style.position = 'absolute';
+		tooltipElement.style.display = 'none';
+
+		document.body.insertBefore(tooltipElement, null);
+
+		return {
+			show: (htmlContent, coordinates = {}) => {
+				let {
+				 	top = 0,
+				 	left = 0,
+				 	right = 0,
+					bottom = 0,
+					width = 0	
+				} = coordinates;
+				const pageScrollTop = pageYOffset;
+
+				tooltipElement.innerHTML = htmlContent;
+				tooltipElement.style.display = 'block';
+
+				tooltipHeight = tooltipElement.offsetHeight + tooltipMargin;
+				tooltipWidth = tooltipElement.offsetWidth;
+				
+				let elemMiddle = left + (width / 2);
+				let tooltipMiddle = tooltipWidth / 2;
+				let middleCoord = elemMiddle - tooltipMiddle;
+
+				top = (top - tooltipHeight > 0) 
+					? (top - tooltipHeight + pageScrollTop) + 'px'
+					: (bottom + tooltipMargin + pageScrollTop) + 'px';
+				left = middleCoord > 0 ? middleCoord + 'px' : 0;
+
+				tooltipElement.style.top = top;
+				tooltipElement.style.left = left;
+			},
+
+			hide: () => {
+				tooltipElement.style.display = 'none';
+				tooltipElement.innerHTML = '';
+			}	
+		};
+	}
 </script>
 
 </body>
