@@ -4,91 +4,40 @@
 <head>
 <meta charset="utf-8">
 <style>
-	body {
-		height: 2000px;
-	}
-	.tooltip {
-		border: 1px solid green;
-		border-radius: 2px;
-		background-color: white;
-		padding: 10px 10px;
-	}
+#contents {
+	padding: 5px;
+	border: 1px green solid;
+}
 </style>
 </head>
 
 <body>
 
-<p>ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя</p>
-<p>ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя</p>
-
-<button data-tooltip="подсказка длиннее, чем элемент">Короткая кнопка</button>
-<button data-tooltip="HTML<br>подсказка">Ещё кнопка</button>
-
-<p>Прокрутите страницу, чтобы ссылки были вверху и проверьте, правильно ли показываются подсказки.</p>
-
+	<fieldset id="contents">
+	<legend>#contents</legend>
+		<p>
+			Как насчет почитать <a href="http://wikipedia.org">Википедию</a>, или посетить <a href="http://w3.org"><i>W3.org</i></a> и узнать про современные стандарты?
+		</p>
+	</fieldset>
 
 <script>
-	const tooltip = tooltipCreator();
+	const contents = document.getElementById('contents');
+	contents.addEventListener('click', confirmLink);
 
-	document.onmouseover = function (e) {
-		const tooltipArg = e.target.getAttribute('data-tooltip');
-		if (tooltipArg) {
-			const coordinates = e.target.getBoundingClientRect();
-			tooltip.show(tooltipArg, coordinates);
+	function confirmLink (e) {
+		let target = e.target;
+		while (e.currentTarget !== target) {
+			if (target.tagName === 'A') {
+				const confirm = window.confirm('Are you sure?');
+				if (!confirm) {
+					e.preventDefault();
+				}
+				return;
+			}
+			target = target.parentNode;
 		}
-	};
-
-	document.onmouseout = function (e) {
-		tooltip.hide();
-	}
-
-	function tooltipCreator () {
-		const tooltipMargin = 6;
-		const tooltipElement = document.createElement('div');
-		tooltipElement.className = 'tooltip';
-		tooltipElement.style.position = 'absolute';
-		tooltipElement.style.display = 'none';
-
-		document.body.insertBefore(tooltipElement, null);
-
-		return {
-			show: (htmlContent, coordinates = {}) => {
-				let {
-				 	top = 0,
-				 	left = 0,
-				 	right = 0,
-					bottom = 0,
-					width = 0	
-				} = coordinates;
-				const pageScrollTop = pageYOffset;
-
-				tooltipElement.innerHTML = htmlContent;
-				tooltipElement.style.display = 'block';
-
-				tooltipHeight = tooltipElement.offsetHeight + tooltipMargin;
-				tooltipWidth = tooltipElement.offsetWidth;
-				
-				let elemMiddle = left + (width / 2);
-				let tooltipMiddle = tooltipWidth / 2;
-				let middleCoord = elemMiddle - tooltipMiddle;
-
-				top = (top - tooltipHeight > 0) 
-					? (top - tooltipHeight + pageScrollTop) + 'px'
-					: (bottom + tooltipMargin + pageScrollTop) + 'px';
-				left = middleCoord > 0 ? middleCoord + 'px' : 0;
-
-				tooltipElement.style.top = top;
-				tooltipElement.style.left = left;
-			},
-
-			hide: () => {
-				tooltipElement.style.display = 'none';
-				tooltipElement.innerHTML = '';
-			}	
-		};
 	}
 </script>
-
 </body>
 
 </html>
