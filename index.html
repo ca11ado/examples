@@ -2,42 +2,93 @@
 <html>
 
 <head>
-<meta charset="utf-8">
-<style>
-#contents {
-	padding: 5px;
-	border: 1px green solid;
-}
-</style>
+	<meta charset="utf-8">
+	<style>
+	.selected {
+		background: #0f0;
+	}
+
+	li {
+		cursor: pointer;
+	}
+	</style>
 </head>
 
 <body>
 
-	<fieldset id="contents">
-	<legend>#contents</legend>
-		<p>
-			Как насчет почитать <a href="http://wikipedia.org">Википедию</a>, или посетить <a href="http://w3.org"><i>W3.org</i></a> и узнать про современные стандарты?
-		</p>
-	</fieldset>
+Клик на элементе выделяет только его.
+<br> Ctrl(Cmd)+Клик добавляет/убирает элемент из выделенных.
+<br> Shift+Клик добавляет промежуток от последнего кликнутого к выделению.
+<br>
+
+<ul>
+	<li>Кристофер Робин</li>
+	<li>Винни-Пух</li>
+	<li>Ослик Иа</li>
+	<li>Мудрая Сова</li>
+	<li>Кролик. Просто кролик.</li>
+</ul>
 
 <script>
-	const contents = document.getElementById('contents');
-	contents.addEventListener('click', confirmLink);
+	const list = document.getElementsByTagName('ul')[0];
+	const toggleSelection = createSelection();
+	
+	list.addEventListener('click', toggleSelection, false);
+	list.addEventListener('mousedown', (e) => e.preventDefault(), false);
 
-	function confirmLink (e) {
-		let target = e.target;
-		while (e.currentTarget !== target) {
-			if (target.tagName === 'A') {
-				const confirm = window.confirm('Are you sure?');
-				if (!confirm) {
-					e.preventDefault();
-				}
-				return;
+
+	function createSelection () {
+		let lastClickedLi;
+
+		function toggleSelect (el) {
+			el.classList.toggle('selected');
+		}
+
+		function rangeSelect(elements, startEl, endEl) {
+			const start = startEl || elements[0];
+			const end = endEl;
+			const isLastClickedBefore = start.compareDocumentPosition(end) === 4;
+
+			start.classList.toggle('selected', true);
+			end.classList.toggle('selected', true);
+			
+			for (
+				let el = start; 
+				el !== end; 
+				el = isLastClickedBefore ? el.nextElementSibling : el.previousElementSibling
+			) {
+				el.classList.toggle('selected', true);
 			}
-			target = target.parentNode;
+		}
+
+		return function (e) {
+			const lis = this.getElementsByTagName('li');
+			const target = e.target;
+			const ctr = e.metaKey || e.ctrlKey;
+			const shift = e.shiftKey;
+
+			if (target.tagName !== 'LI') return;
+
+			lastClickedLi = lastClickedLi ? lastClickedLi : lis[0];	
+
+			if (ctr) {
+				toggleSelect(target);
+			} else if (shift) {
+				rangeSelect(lis, lastClickedLi, target);
+			} else {
+				target.classList.toggle('selected');
+				for (let i = 0; i < lis.length; i++) {
+					if (lis[i] !== target) {
+						lis[i].classList.remove('selected');
+					}
+				}	
+			}
+			lastClickedLi = target;
 		}
 	}
 </script>
+
 </body>
 
 </html>
+

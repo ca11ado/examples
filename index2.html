@@ -2,51 +2,82 @@
 <html>
 
 <head>
-<title>Галерея</title>
-<link rel="stylesheet" href="index2.css">
-<meta charset="utf-8">
+  <meta charset="utf-8">
+  <style>
+    .tree li {
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
 
-	<p><img id="largeImg" src="https://js.cx/gallery/img1-lg.jpg" alt="Large image"></p>
+  <ul class="tree" id="tree">
+    <li>Животные
+      <ul>
+        <li>Млекопитающие
+          <ul>
+            <li>Коровы</li>
+            <li>Ослы</li>
+            <li>Собаки</li>
+            <li>Тигры</li>
+          </ul>
+        </li>
+        <li>Другие
+          <ul>
+            <li>Змеи</li>
+            <li>Птицы</li>
+            <li>Ящерицы</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>Рыбы
+      <ul>
+        <li>Аквариумные
+          <ul>
+            <li>Гуппи</li>
+            <li>Скалярии</li>
+          </ul>
 
-	<div id="thumbs">
-		<!-- При наведении на изображение показывается встроенная подсказка браузера (title) -->
-		<a href="https://js.cx/gallery/img2-lg.jpg" title="Image 2"><img src="https://js.cx/gallery/img2-thumb.jpg"></a>
-		<a href="https://js.cx/gallery/img3-lg.jpg" title="Image 3"><img src="https://js.cx/gallery/img3-thumb.jpg"></a>
-		<a href="https://js.cx/gallery/img4-lg.jpg" title="Image 4"><img src="https://js.cx/gallery/img4-thumb.jpg"></a>
-		<a href="https://js.cx/gallery/img5-lg.jpg" title="Image 5"><img src="https://js.cx/gallery/img5-thumb.jpg"></a>
-		<a href="https://js.cx/gallery/img6-lg.jpg" title="Image 6"><img src="https://js.cx/gallery/img6-thumb.jpg"></a>
-	</div>
+        </li>
+        <li>Морские
+          <ul>
+            <li>Морская форель</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
 
-	<script>
-		preloadImages();
-		const largeElement = document.getElementById('largeImg');
-		const changeImgInElement = changeImg.bind(null, largeElement);
+  <script>
+    var tree = document.getElementById('tree');
 
-		document.getElementById('thumbs').addEventListener('click', changeImgInElement);
-		
-		function changeImg (mainElement, e) {
-			e.preventDefault();
-			let target = e.target;
+    tree.onclick = function(evt) {
+      var evt = evt || event;
+      var target = evt.target || evt.srcElement;
 
-			while (target !== e.currentTarget) {
-				if (target.tagName === 'A') {
-					mainElement.src = target.href;
+      /* раскрыть-закрыть детей */
+      var node = target.getElementsByTagName('ul')[0];
+      if (!node) return; // нет детей
+
+			if (target.tagName === 'LI') {
+				const text = target.childNodes[0];
+				const span = document.createElement('span');
+				target.insertBefore(span, target.children[0]);
+				span.insertBefore(text, null);
+
+				const clickedEl = document.elementFromPoint(evt.clientX, evt.clientY);
+				span.remove();
+				target.insertBefore(text, target.children[0]);
+
+				if (clickedEl === span) {
+						node.style.display = node.style.display ? '' : 'none';
 				}
-				target = target.parentNode;
 			}
-		}
+    }
+  </script>
 
-	function preloadImages () {
-		const images = document.getElementById('thumbs').querySelectorAll('a');
-		for (let i = 0; i < images.length; i++) {
-			document.createElement('img').src = images[i].href;
-		}
-	}
-	</script>
 </body>
 
 </html>
-
