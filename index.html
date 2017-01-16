@@ -2,93 +2,138 @@
 <html>
 
 <head>
-	<meta charset="utf-8">
-	<style>
-	.selected {
-		background: #0f0;
+<meta charset="utf-8">
+<style>
+	body {
+		height: 2000px;
+	}
+	.tooltip {
+		border: 1px solid green;
+		border-radius: 2px;
+		background-color: white;
+		padding: 10px 10px;
 	}
 
-	li {
-		cursor: pointer;
-	}
-	</style>
+	#house {
+  margin-top: 50px;
+  width: 400px;
+    border: 1px solid brown;
+  }
+
+  #roof {
+    width: 0;
+    height: 0;
+    border-left: 200px solid transparent;
+    border-right: 200px solid transparent;
+    border-bottom: 20px solid brown;
+    margin-top: -20px;
+  }
+
+  p {
+    text-align: justify;
+    margin: 10px 3px;
+  }
+</style>
 </head>
 
 <body>
 
-Клик на элементе выделяет только его.
-<br> Ctrl(Cmd)+Клик добавляет/убирает элемент из выделенных.
-<br> Shift+Клик добавляет промежуток от последнего кликнутого к выделению.
-<br>
-
-<ul>
-	<li>Кристофер Робин</li>
-	<li>Винни-Пух</li>
-	<li>Ослик Иа</li>
-	<li>Мудрая Сова</li>
-	<li>Кролик. Просто кролик.</li>
-</ul>
+  <div data-tooltip="Это – внутренность дома" id="house">
+    <div data-tooltip="Это – крыша" id="roof"></div>
+    <p>Жили-были на свете три поросёнка. Три брата.</p>
+    <p>Все одинакового роста, кругленькие, розовые, с одинаковыми весёлыми хвостиками.</p>
+    <p>Даже имена у них были похожи. Звали поросят Ниф-Ниф, Нуф-Нуф и Наф-Наф. Всё лето они кувыркались в зелёной траве, грелись на солнышке, нежились в лужах.</p>
+    <p>Но вот наступила осень. <a href="http://ru.wikipedia.org/wiki/Три_поросёнка" data-tooltip="Читать дальше&hellip;">Наведи на меня</a></p>
+  </div>
 
 <script>
-	const list = document.getElementsByTagName('ul')[0];
-	const toggleSelection = createSelection();
-	
-	list.addEventListener('click', toggleSelection, false);
-	list.addEventListener('mousedown', (e) => e.preventDefault(), false);
+	const tooltip = tooltipCreator();
+  const lastElement = '';
 
-
-	function createSelection () {
-		let lastClickedLi;
-
-		function toggleSelect (el) {
-			el.classList.toggle('selected');
+	document.onmouseover = function (e) {
+		const tooltipArg = e.target.getAttribute('data-tooltip');
+		if (!tooltip.isShowing && tooltipArg) {
+			const coordinates = e.target.getBoundingClientRect();
+			tooltip.show(tooltipArg, coordinates, e.target);
 		}
+	};
 
-		function rangeSelect(elements, startEl, endEl) {
-			const start = startEl || elements[0];
-			const end = endEl;
-			const isLastClickedBefore = start.compareDocumentPosition(end) === 4;
+	document.onmouseout = function (e) {
+    const related = e.relatedTarget;
+    const target = e.target;
+    const outWindow = related === null;
+    const outTooltip = tooltip.target && related === tooltip.target.parentNode;
+    const hasTooltip = related && related.getAttribute('data-tooltip');
+    const anotherTooltip = (related !== tooltip.target) && hasTooltip;
 
-			start.classList.toggle('selected', true);
-			end.classList.toggle('selected', true);
-			
-			for (
-				let el = start; 
-				el !== end; 
-				el = isLastClickedBefore ? el.nextElementSibling : el.previousElementSibling
-			) {
-				el.classList.toggle('selected', true);
-			}
-		}
+    if (outWindow || outTooltip || anotherTooltip) {
+      tooltip.hide();
+    }
+	}
 
-		return function (e) {
-			const lis = this.getElementsByTagName('li');
-			const target = e.target;
-			const ctr = e.metaKey || e.ctrlKey;
-			const shift = e.shiftKey;
+	function tooltipCreator () {
+    let isShowing = false;
+    let target = '';
+		const tooltipMargin = 6;
+		const tooltipElement = document.createElement('div');
+    
+		tooltipElement.className = 'tooltip';
+		tooltipElement.style.position = 'absolute';
+		tooltipElement.style.display = 'none';
 
-			if (target.tagName !== 'LI') return;
+		document.body.insertBefore(tooltipElement, null);
 
-			lastClickedLi = lastClickedLi ? lastClickedLi : lis[0];	
+		return {
+      get isShowing () {
+        return isShowing;
+      },
 
-			if (ctr) {
-				toggleSelect(target);
-			} else if (shift) {
-				rangeSelect(lis, lastClickedLi, target);
-			} else {
-				target.classList.toggle('selected');
-				for (let i = 0; i < lis.length; i++) {
-					if (lis[i] !== target) {
-						lis[i].classList.remove('selected');
-					}
-				}	
-			}
-			lastClickedLi = target;
-		}
+      get target () {
+        return target;
+      },
+
+			show: (htmlContent, coordinates = {}, currentTarget) => {
+				let {
+				 	top = 0,
+				 	left = 0,
+				 	right = 0,
+					bottom = 0,
+					width = 0	
+				} = coordinates;
+				const pageScrollTop = pageYOffset;
+
+        isShowing = true;
+        target = currentTarget;
+
+				tooltipElement.innerHTML = htmlContent;
+				tooltipElement.style.display = 'block';
+
+				tooltipHeight = tooltipElement.offsetHeight + tooltipMargin;
+				tooltipWidth = tooltipElement.offsetWidth;
+				
+				let elemMiddle = left + (width / 2);
+				let tooltipMiddle = tooltipWidth / 2;
+				let middleCoord = elemMiddle - tooltipMiddle;
+
+				top = (top - tooltipHeight > 0) 
+					? (top - tooltipHeight + pageScrollTop) + 'px'
+					: (bottom + tooltipMargin + pageScrollTop) + 'px';
+				left = middleCoord > 0 ? middleCoord + 'px' : 0;
+
+				tooltipElement.style.top = top;
+				tooltipElement.style.left = left;
+			},
+
+			hide: () => {
+        isShowing = false;
+        target = null;
+				tooltipElement.style.display = 'none';
+				tooltipElement.innerHTML = '';
+			}	
+		};
 	}
 </script>
 
 </body>
 
 </html>
-
