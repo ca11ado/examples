@@ -2,46 +2,69 @@
 <html>
   <head>
     <title>Markup</title>
+    <meta charset="utf-8">
     <style>
       body * {
         background-color: rgba(0,0,0,0.1);
+        box-sizing: border-box;
       }
-
-      #wrapper {
-        width: 400px;
-        height: 400px;
+      .wrapper {
+        width: 300px;
+        height: 300px;
       }
-
-      @media screen and (min-width: 801px) {
-        #header {
-          background-color: yellow;
-        }
+      #selector {
+        max-width: 200px;
+        /*border: 1px solid black;*/
+        outline: 1px solid black;
+        outline-offset: -1px;
+        display: inline-block;
+        position: relative;
+        padding: 0 2px;
       }
+      #selector:hover {
+        border: none;
+      }
+      #selector:hover .daw {
+        transform: rotate(-40deg);
+        margin-bottom: -3px;
+      }
+      #selector:hover .selection {
+        display: block;
+      }
+      .daw {
+        width: 10px;
+        height: 10px;
+        border-top: 1px solid blue;
+        border-right: 1px solid blue;
+        transform: rotate(130deg);
+        display: inline-block;
+        margin: 0 10px 3px 10px;
+      }
+      .selection {
+        position: absolute;
+        width: 100%;
+        border: 1px solid black;
+        display: none;
+        top: 100% - 1px;
+        left: 0;
+      }
+      .selection-list {
 
-      @media screen and (max-width: 800px) {
-        #header {
-          width: 50%;
-          float: right;
-        }
-        
-        #center {
-          width: 50%;
-          height: 100%;
-          float: left;
-        }
-
-        #bottom {
-          width: 50%;
-          float: right;
-        }
       }
     </style>
-  </head>
   <body>
-    <div id="wrapper">
-      <div id="header">header</div>
-      <div id="center">center</div>
-      <div id="bottom">bottom</div>
+    <div class="wrapper">
+      <div id="selector">
+        <div class="selection">
+          <ul class="selection-list"> 
+            <li>one</li>
+            <li>two</li>
+            <li>three</li>
+          </ul>
+        </div>
+        Выберите размер
+        <div class="daw"></div>
+      </div>
     </div>
   <script>
 
