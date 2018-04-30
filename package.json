@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "babel-register": "^6.3.13"
+    "babel-register": "^6.3.13",
+    "lodash": "^4.17.10",
+    "ramda": "^0.25.0"
   }
 }
