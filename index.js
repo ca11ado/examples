@@ -8,32 +8,72 @@ import map from 'lodash/fp/map';
 import filter from 'lodash/fp/filter';
 import * as R from 'ramda';
 
-const add = v => {
-  console.log('add func');
-  return v + v;
-};
-const v2 = v => {
-  console.log('v2 func');
-  return v * v;
-};
-const onlyOdd = v => {
-  console.log('odd filter');
-  return v % 2 === 0;
-};
+class Trace {
+  constructor () {
+    this.trace = {};
+    this.name = '';
+  }
 
-/*const arr = times(200);
+  setName (name) {
+    this.name = name;
+  }
 
-const result = flow(
+  countFuncExecution (funcName) {
+    const name = this.name || 'default';
+    if (!this.trace[name]) {
+      this.trace[name] = {};
+    }
+
+    this.trace[name][funcName] = this.trace[name][funcName]
+      ? ++this.trace[name][funcName]
+      : 1;
+  }
+
+  show () {
+    R.forEachObjIndexed((value, key) => {
+      console.log(`<Trace ${key}>`);
+      R.forEachObjIndexed((v, k) => {
+        console.log(`function: ${k} has ${v}`);
+      }, value);
+    }, this.trace);
+  }
+}
+
+const arr = times(200);
+const trace = new Trace();
+
+const add = a => b => a + b;
+const addOne = add(1);
+const addTwo = add(2);
+const onlyOdd = v => v % 2 === 0;
+
+flow(
   map(add),
   filter(onlyOdd),
   take(3),
-)(arr);*/
+);
 
-const arrR = R.range(1, 200);
-const resultR = R.compose(
+trace.setName('ramda pipe');
+R.pipe(
   R.map(add),
   R.filter(onlyOdd),
-  R.take(3)
-)(arrR);
+  R.take(3),
+);
 
-console.log(resultR);
+trace.setName('ramda compose');
+R.compose(
+  R.take(3),
+  R.filter(onlyOdd),
+  R.map(add)
+);
+
+const addTwo2 = R.compose(R.tap(() => trace.countFuncExecution('add two')), addTwo);
+const addOne2 = R.compose(R.tap(() => trace.countFuncExecution('add one')), addOne);
+trace.setName('ramda compose only map');
+R.compose(
+  R.take(3),
+  R.map(addTwo2),
+  R.map(addOne2)
+)(arr);
+
+trace.show();
