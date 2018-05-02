@@ -1,12 +1,30 @@
-'use strict';
-require('babel-register');
-
 import times from 'lodash/times';
 import flow from 'lodash/fp/flow';
 import take from 'lodash/fp/take';
 import map from 'lodash/fp/map';
 import filter from 'lodash/fp/filter';
+
+/*
+import { times } from 'lodash';
+import { flow, take, map, filter } from 'lodash/fp';
+*/
+/*
 import * as R from 'ramda';
+*/
+/*
+import rMap from 'ramda/src/map';
+import rTake from 'ramda/src/take';
+import rPipe from 'ramda/src/pipe';
+import rFilter from 'ramda/src/filter';
+import rCompose from 'ramda/src/compose';
+*/
+import {
+  map as rMap,
+  take as rTake,
+  pipe as rPipe,
+  filter as rFilter,
+  compose as rCompose
+} from 'ramda/src';
 
 class Trace {
   constructor () {
@@ -54,26 +72,26 @@ flow(
 );
 
 trace.setName('ramda pipe');
-R.pipe(
-  R.map(add),
-  R.filter(onlyOdd),
-  R.take(3),
+rPipe(
+  rMap(add),
+  rFilter(onlyOdd),
+  rTake(3),
 );
 
 trace.setName('ramda compose');
-R.compose(
-  R.take(3),
-  R.filter(onlyOdd),
-  R.map(add)
+rCompose(
+  rTake(3),
+  rFilter(onlyOdd),
+  rMap(add)
 );
 
 const addTwo2 = R.compose(R.tap(() => trace.countFuncExecution('add two')), addTwo);
 const addOne2 = R.compose(R.tap(() => trace.countFuncExecution('add one')), addOne);
 trace.setName('ramda compose only map');
-R.compose(
-  R.take(3),
-  R.map(addTwo2),
-  R.map(addOne2)
+rCompose(
+  rTake(3),
+  rMap(addTwo2),
+  rMap(addOne2)
 )(arr);
 
 trace.show();
