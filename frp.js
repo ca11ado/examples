@@ -1,11 +1,5 @@
-const formula = (inside, y, y1, y2, x, x1, x2) => {
-  if( ( y1 < y  &&  y2 >= y ) || ( y2 < y  &&  y1 >= y ) ) {
-    if ( x1 + ( y - y1 ) / ( y2 - y1 ) * ( x2 - x1 ) < x ) {
-      return !inside;
-    }
-  }
-
-  return inside;
+function formula(x, x1, x2, y, y1, y2) {
+  return ( ( y1 < y  &&  y2 >= y ) || ( y2 < y  &&  y1 >= y ) ) && ( x1 + ( y - y1 ) / ( y2 - y1 ) * ( x2 - x1 ) < x );
 }
 
 export function insidePolygon2(pos, poly) {
@@ -18,7 +12,7 @@ export function insidePolygon2(pos, poly) {
     const x1 = xy1.x;
     const y2 = currentPos.y;
     const x2 = currentPos.x;
-    return formula(isInside, y, y1, y2, x, x1, x2);
+    return formula(x, x1, x2, y, y1, y2) ? !isInside : isInside;
   }, false);
 }
 
