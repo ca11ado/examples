@@ -1,3 +1,27 @@
+const formula = (inside, y, y1, y2, x, x1, x2) => {
+  if( ( y1 < y  &&  y2 >= y ) || ( y2 < y  &&  y1 >= y ) ) {
+    if ( x1 + ( y - y1 ) / ( y2 - y1 ) * ( x2 - x1 ) < x ) {
+      return !inside;
+    }
+  }
+
+  return inside;
+}
+
+export function insidePolygon2(pos, poly) {
+  const coords = poly.coords;
+  const x = pos.x;
+  const y = pos.y;
+  return coords.reduce((isInside, currentPos, index) => {
+    const xy1 = coords[index - 1] || coords[coords.length - 1];
+    const y1 = xy1.y
+    const x1 = xy1.x;
+    const y2 = currentPos.y;
+    const x2 = currentPos.x;
+    return formula(isInside, y, y1, y2, x, x1, x2);
+  }, false);
+}
+
 export function insidePolygon(pos, poly) {
     var x = pos.x, y = pos.y, coords = poly.coords, inside = false;
     var v = coords[coords.length-1], x1 = v.x, y1 = v.y;

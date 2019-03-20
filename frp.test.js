@@ -1,11 +1,7 @@
-import { shapes, insidePolygon } from "./frp.js";
+import { shapes, insidePolygon2, insidePolygon } from "./frp.js";
 
 test('check shapes', () => {
   expect(shapes instanceof Array).toBe(true);
-});
-
-test('check function', () => {
-  expect(insidePolygon instanceof Function).toBe(true);
 });
 
 const outSidePolygonPos = [
@@ -75,6 +71,40 @@ test('check all clicks were outside cat polygon', () => {
 test('check all clicks were outside dog polygon', () => {
   const allOutside = catPos.concat(outSidePolygonPos).reduce((acc, pos) => {
     const isOutside = !insidePolygon(pos, shapes[1]);
+    return (acc && isOutside);
+  }, true);
+  expect(allOutside).toBe(true);
+});
+
+
+
+test('check all clicks were inside cat polygon', () => {
+  const allInside = catPos.reduce((acc, pos) => {
+    const isInside = insidePolygon2(pos, shapes[0]);
+    return (acc && isInside);
+  }, true);
+  expect(allInside).toBe(true);
+});
+
+test('check all clicks were inside dog polygon', () => {
+  const allInside = dogPos.reduce((acc, pos) => {
+    const isInside = insidePolygon2(pos, shapes[1]);
+    return (acc && isInside);
+  }, true);
+  expect(allInside).toBe(true);
+});
+
+test('check all clicks were outside cat polygon', () => {
+  const allOutside = dogPos.concat(outSidePolygonPos).reduce((acc, pos) => {
+    const isOutside = !insidePolygon2(pos, shapes[0]);
+    return (acc && isOutside);
+  }, true);
+  expect(allOutside).toBe(true);
+});
+
+test('check all clicks were outside dog polygon', () => {
+  const allOutside = catPos.concat(outSidePolygonPos).reduce((acc, pos) => {
+    const isOutside = !insidePolygon2(pos, shapes[1]);
     return (acc && isOutside);
   }, true);
   expect(allOutside).toBe(true);
