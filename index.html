@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Here will be SVG experiments</title>
+    <style>
+      .wrapper {
+        border: 1px solid black;
+        padding: 5px 10px;
+        margin-bottom: 2px;
+      }
+      .wrapper__output {
+        width: 100%;
+      }
+      .square {
+        width: 200px;
+        height: 200px;
+      }
+    </style>
+  </head>  
+  <body>
+    <div class="wrapper">
+      <h1>
+        Types of SVG shapes
+      </h1>
+      <svg class="wrapper__output">
+        <rect width="90%" height="10" fill="gold" x="5%" y="10" />
+        <circle r="10" cx="50%" cy="50" fill="skyblue" />
+        <ellipse rx="50" ry="10" cx="30%" cy="50" fill="crimson" />
+        <line x1="5%" y1="50" x2="20%" y2="50" stroke="yellowgreen" stroke-width="10" />
+        <polygon points="500,50 600,60 600,50 500,60" stroke="green" stroke-width="2" fill="grey" />
+        <polyline points="700,50 800,60 800,50 700,60 900,60" stroke="green" stroke-width="2" fill="crimson" />
+      </svg>
+    </div>
+    <div class="wrapper">
+      <h1>
+        Guitar
+      </h1>
+      <svg class="square" viewbox="0 0 1000 1000">
+        <rect width="100%" height="100%" fill="lightyellow" />
+        
+        <rect width="1" height="100%" x="50%" y="10" stroke="crimson" /><!-- markup -->
+        <rect width="40" height="400" x="480" y="100" fill="none" stroke="black" stroke-width="4" />
+        
+        <path d="M 500,350
+                 Q 300,440 410,550
+                 Q 500,580 350,640
+                 Q 130,750 350,900
+                 z" stroke="black" stroke-width="4" fill="none" />
+      </svg>
+    </div>
+    <div class="wrapper">
+      <h1>
+        Guitar 2
+      </h1>
+      <svg class="square" viewbox="0 0 1000 1000">
+        <rect width="100%" height="100%" fill="lightyellow" />
+
+        <circle r="150" cx="500" cy="500" fill="lightgray" />
+        <circle r="210" cx="500" cy="700" fill="lightgray" />
+        <rect width="60" height="350" x="470" y="195" fill="lightgray" stroke="black" />
+        <circle r="60" cx="500" cy="600" fill="darkgray" />
+
+        <line x1="475" y1="195" x2="475" y2="740" fill="none" stroke="black" />
+        <line x1="480" y1="195" x2="480" y2="740" fill="none" stroke="black" />
+        <line x1="485" y1="195" x2="485" y2="740" fill="none" stroke="black" />
+        <line x1="490" y1="195" x2="490" y2="740" fill="none" stroke="black" />
+        <line x1="495" y1="195" x2="495" y2="740" fill="none" stroke="black" />
+        <line x1="500" y1="195" x2="500" y2="740" fill="none" stroke="black" />
+      </svg>
+    </div>
+  </body>
+</html>
+
