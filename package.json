@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "babel-register": "^6.3.13"
+    "babel-register": "^6.3.13",
+    "imagemin": "^6.1.0",
+    "imagemin-webp": "^5.0.0"
   }
 }
