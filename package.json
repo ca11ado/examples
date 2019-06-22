@@ -9,7 +9,8 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "babel-register": "^6.3.13"
+  "dependencies": {},
+  "devDependencies": {
+    "parcel": "^1.12.3"
   }
 }

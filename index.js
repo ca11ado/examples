@@ -1,3 +1,4 @@
-'use strict';
-require('babel-register');
+import module from './module.js';
 
+console.log('this is index.js file');
+module();
