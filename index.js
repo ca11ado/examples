@@ -1,4 +1,2 @@
-import module from './module.js';
+import utils from './utils/files.js';
 
-console.log('this is index.js file');
-module();
