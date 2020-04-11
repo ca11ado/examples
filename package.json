@@ -6,13 +6,16 @@
   "scripts": {
     "start": "npm run build && node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "parcel watch --target=node index.js",
     "build": "parcel build --no-minify --target=node index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
+    "nodemon": "^2.0.3",
     "parcel": "^1.12.3"
   }
 }
