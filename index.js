@@ -61,3 +61,45 @@ const c2r2 = getDigitsFromString(firstProduct)
       .fold(price => addCurrency('rub', price)))
 
 log(c2r2);
+
+chapter('Three. Enforce a null check with composable code branching using Either.');
+
+const Left = x => ({
+  map: f => Left(x),
+  fold: (f, g) => f(x),
+  [inspect]: () => `Left(${x})`,
+});
+const Right = x => ({
+  map: f => Right(f(x)),
+  fold: (f, g) => g(x),
+  [inspect]: () => `Right(${x})`,
+});
+const colors = {
+  red: '#ff4444',
+  blue: '#3b5998',
+  yellow: '#fff68f',
+};
+const getColor = name => {
+  const color = colors[name];
+  return color ? Right(color) : Left(name);
+};
+const c3r1 = getColor('blue')
+  .map(helpers.removePoundSign)
+  .fold(e => `error: has no color "${e}"`, color => color);
+const c3r2 = getColor('green')
+  .map(helpers.removePoundSign)
+  .fold(e => `error: has color "${e}"`, color => color);
+
+const fromNullable = x => x ? Right(x) : Left(null);
+const getColor2 = name => fromNullable(colors[name]);
+const c3r3 = getColor2('blue')
+  .map(helpers.removePoundSign)
+  .fold(e => `error: has color "${e}"`, color => color);
+const c3r4 = getColor2('green')
+  .map(helpers.removePoundSign)
+  .fold(e => `error: has color "${e}"`, color => color);
+
+log(c3r1);
+log(c3r2);
+log(c3r3);
+log(c3r4);
