@@ -1,3 +1,4 @@
+import fs from 'fs';
 import curry from 'lodash/curry';
 
 export const summ = curry((b, a) => a + b);
@@ -21,3 +22,13 @@ export const addTax = curry((factor, price) => {
 export const addCurrency = curry((currency, price) => `${price} ${currency}`);
 
 export const removePoundSign = str => str.replace('#', '');
+
+export const getPort = fileName => {
+  try {
+    const str = fs.readFileSync(fileName);
+    const config = JSON.parse(str);
+    return config.port;
+  } catch (e) {
+    return 3000;
+  }
+};
