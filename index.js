@@ -97,5 +97,25 @@ const configFile = 'config.json';
 const c4r1 = helpers.getPort(configFile);
 const c4r2 = fp.getPort(configFile);
 
-log(c4r1);
-log(c4r2);
+xlog(c4r1);
+xlog(c4r2);
+
+/**
+ * Chapter 10. foldMap
+ */
+
+const c10r1 = fp.Sum(10).concat(fp.Sum(2));
+
+const c10r2 = [fp.Sum(1), fp.Sum(2), fp.Sum(3)]
+  .reduce((acc, x) => acc.concat(x), fp.Sum.empty());
+
+const c10r3 = fp.List.of(fp.Sum(1), fp.Sum(2))
+  .fold(fp.Sum.empty());
+
+const c10r4 = fp.List.of(1, 2, 3, 4)
+  .foldMap(fp.Sum, fp.Sum.empty());
+
+log(c10r1);
+log(c10r2);
+log(c10r3);
+log(c10r4);

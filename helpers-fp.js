@@ -29,6 +29,27 @@ export const tryCatch = f => {
   }
 };
 
+/**
+ * Semigroup. Type with "concat" method
+ */
+export const Sum = x => ({
+  x,
+  concat({ x: y }) {
+    return Sum(x + y);
+  },
+  [inspect]: () => `Sum(${x})`,
+});
+
+Sum.empty = () => Sum(0);
+
+export const List = arr => ({
+  arr,
+  fold: dflt => arr.reduce((acc, current) => acc.concat(current), dflt),
+  foldMap: (f, dflt) => arr.reduce((acc, current) => acc.concat(f(current)), dflt),
+});
+
+List.of = (...arr) => List(arr);
+
 export const getPort = fileName =>
   tryCatch(() => fs.readFileSync(fileName))
     .chain(str => tryCatch(() => JSON.parse(str)))
